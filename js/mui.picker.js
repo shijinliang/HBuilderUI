@@ -313,10 +313,15 @@
 
 	Picker.prototype.getSelectedIndex = function() {
 		var self = this;
+		console.log(self.list.angle);
+		console.log(self.itemAngle);
+		//self.itemAngle 单个item的高度
+		//self.list.angle  当前选择的高度
 		return parseInt((self.list.angle / self.itemAngle).toFixed(0));
 	};
 
 	Picker.prototype.setSelectedIndex = function(index, duration) {
+		console.log("Picker setSelectedIndex index");
 		var self = this;
 		self.list.style.webkitTransition = '';
 		var angle = self.correctAngle(self.itemAngle * index);
@@ -330,6 +335,7 @@
 	};
 
 	Picker.prototype.getSelectedItem = function() {
+		console.log("Picker  getSelectedItem");
 		var self = this;
 		return self.items[self.getSelectedIndex()];
 	};
