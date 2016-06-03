@@ -82,6 +82,7 @@
 			}, false);
 		},
 		_createPicker: function() {
+			console.log("_createPicker");
 			var self = this;
 			var layer = self.options.layer || 1;
 			var width = (100 / layer) + '%';
@@ -98,6 +99,10 @@
 						var eventData = event.detail || {};
 						var preItem = eventData.item || {};
 						nextPickerElement.picker.setItems(preItem.children);
+						
+						if (self.waitToSetValues && self.waitToSetValues.length>0) {
+							nextPickerElement.picker.setSelectedValue(self.waitToSetValues.shift());
+						}
 					}
 				}, false);
 			}
@@ -107,7 +112,23 @@
 			var self = this;
 			data = data || [];
 			self.pickers[0].setItems(data);
+			
 		},
+
+		//设置默认值
+		setSelectValue: function(arr) {
+            var self = this;
+            console.log("arr");
+            if(arr){
+                if(typeof(arr)=="string"){
+                    self.waitToSetValues = [arr];
+                }else if(arr instanceof Array){
+                    self.waitToSetValues = arr;
+                }
+                self.pickers[0].setSelectedValue(self.waitToSetValues.shift());
+            }
+        },
+
 		//获取选中的项（数组）
 		getSelectedItems: function() {
 			var self = this;
@@ -115,7 +136,9 @@
 			for (var i in self.pickers) {
 				var picker = self.pickers[i];
 				items.push(picker.getSelectedItem() || {});
+
 			}
+			console.log(JSON.stringify(items));
 			return items;
 		},
 		//显示
